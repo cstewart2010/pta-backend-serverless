@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,7 +7,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using TheReplacement.PTA.Api.Services.Enums;
 using TheReplacement.PTA.Api.Services;
 using TheReplacement.PTA.Api.Services.Models;
@@ -17,12 +14,14 @@ using System.Linq;
 using TheReplacement.PTA.Api.Extensions;
 using TheReplacement.PTA.Api.Messages;
 using TheReplacement.PTA.Api.Models;
+using TheReplacement.PTA.Api.Abstractions;
 
 namespace TheReplacement.PTA.Api.Controllers
 {
     public class BasePokemonController : BaseStaticController
     {
         private readonly ILogger<BasePokemonController> _logger;
+        private const string RoutePrefix = "v1/pokedex";
         private static readonly IEnumerable<BasePokemonModel> AllPokemon = DexUtility.GetDexEntries<BasePokemonModel>(DexType.BasePokemon);
         private static readonly IEnumerable<BasePokemonModel> BasePokemon = AllPokemon
             .GroupBy(pokemon => pokemon.DexNo)
@@ -41,7 +40,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Limit** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
         public IActionResult GetAllPokemon(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/pokedex")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RoutePrefix)] HttpRequest req)
         {
             if (!int.TryParse(req.Query["offset"], out var offset))
             {
@@ -62,13 +61,14 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
         public IActionResult GetBasePokemonByName(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/pokedex/{name}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/{{name}}")] HttpRequest req,
             string name)
         {
             if (string.IsNullOrEmpty(name))
             {
                 return new BadRequestObjectResult($"You forgot the {nameof(name)} route parameter");
             }
+
             var document = AllPokemon.GetStaticDocument(name);
             if (document != null)
             {
@@ -85,7 +85,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
         public IActionResult GetPokemonByForm(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/pokedex/{form}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/{{form}}")] HttpRequest req,
             string form)
         {
             if (string.IsNullOrEmpty(form))

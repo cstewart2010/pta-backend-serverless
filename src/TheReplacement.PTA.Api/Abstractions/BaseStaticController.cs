@@ -5,7 +5,7 @@ using TheReplacement.PTA.Api.Extensions;
 using TheReplacement.PTA.Api.Messages;
 using TheReplacement.PTA.Api.Services.Interfaces;
 
-namespace TheReplacement.PTA.Api.Controllers
+namespace TheReplacement.PTA.Api.Abstractions
 {
     public abstract class BaseStaticController
     {
