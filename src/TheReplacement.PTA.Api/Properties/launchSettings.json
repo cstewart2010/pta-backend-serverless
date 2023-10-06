@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TheReplacement.PTA.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7109",
+      "launchBrowser": false
+    }
+  }
+}
