@@ -36,8 +36,8 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllPokemon")]
         [OpenApiOperation(operationId: "GetAllPokemon")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Limit** parameter")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
         public IActionResult GetAllPokemon(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RoutePrefix)] HttpRequest req)

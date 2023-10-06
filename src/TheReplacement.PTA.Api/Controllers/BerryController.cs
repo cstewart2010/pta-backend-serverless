@@ -6,14 +6,11 @@ using TheReplacement.PTA.Api.Services.Models;
 using TheReplacement.PTA.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System.Net;
-using System;
 using TheReplacement.PTA.Api.Messages;
 using TheReplacement.PTA.Api.Extensions;
 
@@ -32,8 +29,8 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllBerries")]
         [OpenApiOperation(operationId: "GetAllBerries")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Limit** parameter")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
         public IActionResult GetAllBerries(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RoutePrefix)] HttpRequest req)
