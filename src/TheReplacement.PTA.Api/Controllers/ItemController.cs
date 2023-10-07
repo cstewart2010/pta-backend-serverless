@@ -18,7 +18,6 @@ namespace TheReplacement.PTA.Api.Controllers
 {
     public class ItemController : BaseStaticController
     {
-        private readonly ILogger<ItemController> _logger;
         private const string RoutePrefix = "v1/itemdex";
         private static readonly IEnumerable<BaseItemModel> KeyItems = DexUtility.GetDexEntries<BaseItemModel>(DexType.KeyItems);
         private static readonly IEnumerable<BaseItemModel> MedicalItems = DexUtility.GetDexEntries<BaseItemModel>(DexType.MedicalItems);

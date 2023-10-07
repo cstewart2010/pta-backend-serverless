@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace TheReplacement.PTA.Api.Abstractions
 {
     public abstract class BaseStaticController
     {
+        protected ILogger<BaseStaticController> _logger;
+
         public static StaticCollectionMessage GetStaticCollectionResponse<TDocument>(
             IEnumerable<TDocument> documents,
             HttpRequest request) where TDocument : IDexDocument

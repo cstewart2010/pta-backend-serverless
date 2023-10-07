@@ -18,7 +18,6 @@ namespace TheReplacement.PTA.Api.Controllers
 {
     internal class FeatureController : BaseStaticController
     {
-        private readonly ILogger<FeatureController> _logger;
         private const string RoutePrefix = "v1/featuredex";
         private static readonly IEnumerable<FeatureModel> GeneralFeatures = DexUtility.GetDexEntries<FeatureModel>(DexType.Features);
         private static readonly IEnumerable<FeatureModel> LegendaryFeatures = DexUtility.GetDexEntries<FeatureModel>(DexType.LegendaryFeatures);
