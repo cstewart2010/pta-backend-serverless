@@ -28,7 +28,7 @@ namespace TheReplacement.PTA.Api.Abstractions
             var previous = GetPreviousUrl(offset, limit, hostUrl);
             var next = GetNextUrl(offset, limit, count, hostUrl);
             var results = documents.GetSubset(offset, limit)
-                .Select(GetResultsMember);
+                .Select(doc => GetResultsMember(doc, hostUrl));
 
             return new StaticCollectionMessage
             (
@@ -62,7 +62,7 @@ namespace TheReplacement.PTA.Api.Abstractions
             return $"{hostUrl}?offset={nextOffset}&limit={limit}";
         }
 
-        protected ResultMessage GetResultsMember<TDocument>(TDocument document) where TDocument : IDexDocument
+        protected ResultMessage GetResultsMember<TDocument>(TDocument document, string hostUrl) where TDocument : IDexDocument
         {
             if (document == null)
             {
@@ -72,7 +72,7 @@ namespace TheReplacement.PTA.Api.Abstractions
             return new ResultMessage
             {
                 Name = document.Name,
-                Url = $"{document.Name.Replace("/", "_")}"
+                Url = $"{hostUrl}/{document.Name.Replace("/", "_")}"
             };
         }
     }
