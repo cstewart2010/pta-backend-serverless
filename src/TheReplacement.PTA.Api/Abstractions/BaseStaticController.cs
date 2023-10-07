@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheReplacement.PTA.Api.Extensions;
@@ -11,12 +12,21 @@ namespace TheReplacement.PTA.Api.Abstractions
     {
         public StaticCollectionMessage GetStaticCollectionResponse<TDocument>(
             IEnumerable<TDocument> documents,
-            int offset,
-            int limit) where TDocument : IDexDocument
+            HttpRequest request) where TDocument : IDexDocument
         {
+            if (!int.TryParse(request.Query["offset"], out var offset))
+            {
+                offset = 0;
+            }
+            if (!int.TryParse(request.Query["limit"], out var limit))
+            {
+                limit = 20;
+            }
+
+            var hostUrl = $"{request.Scheme}://{request.Host}{request.Path}".Trim('/');
             var count = documents.Count();
-            var previous = GetPreviousUrl(offset, limit);
-            var next = GetNextUrl(offset, limit, count);
+            var previous = GetPreviousUrl(offset, limit, hostUrl);
+            var next = GetNextUrl(offset, limit, count, hostUrl);
             var results = documents.GetSubset(offset, limit)
                 .Select(GetResultsMember);
 
@@ -29,7 +39,7 @@ namespace TheReplacement.PTA.Api.Abstractions
             );
         }
 
-        protected string GetPreviousUrl(int offset, int limit)
+        protected string GetPreviousUrl(int offset, int limit, string hostUrl)
         {
             int previousOffset = Math.Max(0, offset - limit);
             int previousLimit = offset - limit < 0 ? offset : limit;
@@ -38,10 +48,10 @@ namespace TheReplacement.PTA.Api.Abstractions
                 return null;
             }
 
-            return $"?offset={previousOffset}&limit={previousLimit}";
+            return $"{hostUrl}?offset={previousOffset}&limit={previousLimit}";
         }
 
-        protected string GetNextUrl(int offset, int limit, int count)
+        protected string GetNextUrl(int offset, int limit, int count, string hostUrl)
         {
             int nextOffset = Math.Min(offset + limit, count - limit);
             if (nextOffset <= offset)
@@ -49,7 +59,7 @@ namespace TheReplacement.PTA.Api.Abstractions
                 return null;
             }
 
-            return $"?offset={nextOffset}&limit={limit}";
+            return $"{hostUrl}?offset={nextOffset}&limit={limit}";
         }
 
         protected ResultMessage GetResultsMember<TDocument>(TDocument document) where TDocument : IDexDocument

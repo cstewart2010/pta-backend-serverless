@@ -8,7 +8,7 @@ namespace TheReplacement.PTA.Api.Services.Models
     /// </summary>
     public class MinifiedGameModel
     {
-        internal MinifiedGameModel(GameModel game)
+        public MinifiedGameModel(GameModel game)
         {
             GameId = game.GameId;
             Nickname = game.Nickname;

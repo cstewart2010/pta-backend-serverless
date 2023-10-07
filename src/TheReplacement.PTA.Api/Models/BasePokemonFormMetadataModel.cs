@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheReplacement.PTA.Api.Models
 {
-    internal class BasePokemonFormMetadata
+    internal class BasePokemonFormMetadataModel
     {
         public string Name { get; init; }
         public string Form { get; init; }

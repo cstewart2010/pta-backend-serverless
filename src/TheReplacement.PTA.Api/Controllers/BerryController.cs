@@ -29,30 +29,21 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllBerries")]
         [OpenApiOperation(operationId: "GetAllBerries")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
         public IActionResult GetAllBerries(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RoutePrefix)] HttpRequest req)
         {
-            if (!int.TryParse(req.Query["offset"], out var offset))
-            {
-                offset = 0;
-            }
-            if (!int.TryParse(req.Query["limit"], out var limit))
-            {
-                limit = 20;
-            }
-
-            return new OkObjectResult(GetStaticCollectionResponse(Berries, offset, limit));
+            return new OkObjectResult(GetStaticCollectionResponse(Berries, req));
         }
 
         [FunctionName("GetBerryByName")]
         [OpenApiOperation(operationId: "GetBerryByName")]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BerryModel), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BerryModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetBerryByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/{{name}}")] HttpRequest req,
             string name)

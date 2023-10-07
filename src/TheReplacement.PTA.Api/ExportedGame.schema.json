@@ -1,0 +1,361 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for the ExportGame data object",
+
+  "type": "object",
+
+  "additionalProperties": false,
+
+  "definitions": {
+    "game": {
+      "type": "object",
+      "description": "Data for the GameSession data object.",
+      "required": [
+        "GameId",
+        "Nickname",
+        "IsOnline",
+        "PasswordHash",
+        "NPCs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "GameId": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "Nickname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 18
+        },
+        "IsOnline": {
+          "type": "boolean"
+        },
+        "PasswordHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "NPCs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        }
+      }
+    },
+    "trainer": {
+      "required": [
+        "GameId",
+        "TrainerId",
+        "Level",
+        "TrainerName",
+        "PasswordHash",
+        "TrainerClasses",
+        "TrainerStats",
+        "Feats",
+        "Money",
+        "IsOnline",
+        "Items",
+        "IsGM"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "GameId": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "TrainerId": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "Level": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "TrainerName": {
+          "type": "string"
+        },
+        "PasswordHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ActivityToken": {
+          "type": "string"
+        },
+        "TrainerClasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4
+        },
+        "TrainerStats": {
+          "type": "object",
+          "required": [
+            "EarnedStats",
+            "RawChaValue",
+            "RawConValue",
+            "RawDexValue",
+            "RawIntValue",
+            "RawStrValue",
+            "RawWisValue"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "RawStrValue": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "RawDexValue": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "RawConValue": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "RawIntValue": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "RawWisValue": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "RawChaValue": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "EarnedStats": {
+              "type": "integer",
+              "minimum": 64
+            }
+          }
+        },
+        "Feats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 36
+        },
+        "Money": {
+          "type": "integer"
+        },
+        "IsOnline": {
+          "type": "boolean"
+        },
+        "Items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "Amount",
+              "Name"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "Name": {
+                "type": "string"
+              },
+              "Amount": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "IsGM": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pokemonStat": {
+      "type": "object",
+      "required": [
+        "Base",
+        "Modifier",
+        "Added",
+        "Total"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "Base": {
+          "type": "integer"
+        },
+        "Modifier": {
+          "type": "integer"
+        },
+        "Added": {
+          "type": "integer"
+        },
+        "Total": {
+          "type": "integer"
+        }
+      }
+    },
+    "pokemon": {
+      "required": [
+        "PokemonId",
+        "DexNo",
+        "TrainerId",
+        "Nickname",
+        "Ability",
+        "Gender",
+        "NaturalMoves",
+        "TMMoves",
+        "Type",
+        "Experience",
+        "Level",
+        "ExpYield",
+        "CatchRate",
+        "Nature",
+        "IsShiny",
+        "IsOnActiveTeam",
+        "HP",
+        "Attack",
+        "Defense",
+        "SpecialAttack",
+        "SpecialDefense",
+        "Speed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "PokemonId": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "DexNo": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "TrainerId": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "Gender": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "Nickname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 18
+        },
+        "Ability": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "NaturalMoves": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        },
+        "TMMoves": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        },
+        "Type": {
+          "type": "integer"
+        },
+        "Experience": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "Level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "ExpYield": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "CatchRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "IsOnActiveTeam": {
+          "type": "boolean"
+        },
+        "IsShiny": {
+          "type": "boolean"
+        },
+        "Nature": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 35
+        },
+        "HP": {
+          "$ref": "#/definitions/pokemonStat"
+        },
+        "Attack": {
+          "$ref": "#/definitions/pokemonStat"
+        },
+        "Defense": {
+          "$ref": "#/definitions/pokemonStat"
+        },
+        "SpecialAttack": {
+          "$ref": "#/definitions/pokemonStat"
+        },
+        "SpecialDefense": {
+          "$ref": "#/definitions/pokemonStat"
+        },
+        "Speed": {
+          "$ref": "#/definitions/pokemonStat"
+        }
+      }
+    }
+  },
+
+  "required": [
+    "GameSession",
+    "Trainers"
+  ],
+
+  "properties": {
+    "GameSession": {
+      "$ref": "#/definitions/game"
+    },
+    "Trainers": {
+      "type": "array",
+      "description": "An collection of ExportedTrainer data.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "Trainer",
+          "Pokemon"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "Trainer": {
+            "$ref": "#/definitions/trainer"
+          },
+          "Pokemon": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/pokemon"
+            }
+          }
+        }
+      }
+    }
+  }
+}

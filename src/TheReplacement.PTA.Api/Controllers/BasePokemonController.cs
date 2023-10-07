@@ -36,30 +36,21 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllPokemon")]
         [OpenApiOperation(operationId: "GetAllPokemon")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
         public IActionResult GetAllPokemon(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RoutePrefix)] HttpRequest req)
         {
-            if (!int.TryParse(req.Query["offset"], out var offset))
-            {
-                offset = 0;
-            }
-            if (!int.TryParse(req.Query["limit"], out var limit))
-            {
-                limit = 20;
-            }
-
-            return new OkObjectResult(GetStaticCollectionResponse(BasePokemon, offset, limit));
+            return new OkObjectResult(GetStaticCollectionResponse(BasePokemon, req));
         }
 
         [FunctionName("GetBasePokemonByName")]
         [OpenApiOperation(operationId: "GetBasePokemonByName")]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BasePokemonModel), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BasePokemonModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetBasePokemonByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/{{name}}")] HttpRequest req,
             string name)
@@ -80,19 +71,19 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetPokemonByForm")]
         [OpenApiOperation(operationId: "GetPokemonByForm")]
-        [OpenApiParameter(name: "form", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Form** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BasePokemonFormMetadata[]), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "form", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BasePokemonFormMetadataModel[]))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetPokemonByForm(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/{{form}}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/form/{{form}}")] HttpRequest req,
             string form)
         {
             if (string.IsNullOrEmpty(form))
             {
                 return new BadRequestObjectResult($"You forgot the {nameof(form)} route parameter");
             }
-            var pokemon = AllPokemon.Where(pokemon => pokemon.Form.Contains(form)).Select(pokemon => new BasePokemonFormMetadata
+            var pokemon = AllPokemon.Where(pokemon => pokemon.Form.Contains(form)).Select(pokemon => new BasePokemonFormMetadataModel
             {
                 Name = pokemon.Name,
                 Form = pokemon.Form

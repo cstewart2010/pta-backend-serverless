@@ -6,14 +6,11 @@ using TheReplacement.PTA.Api.Services.Models;
 using TheReplacement.PTA.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System.Net;
-using System;
 using TheReplacement.PTA.Api.Messages;
 using TheReplacement.PTA.Api.Extensions;
 
@@ -35,30 +32,21 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllGeneralFeatures")]
         [OpenApiOperation(operationId: "GetAllGeneralFeatures")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
         public IActionResult GetAllGeneralFeatures(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/general")] HttpRequest req)
         {
-            if (!int.TryParse(req.Query["offset"], out var offset))
-            {
-                offset = 0;
-            }
-            if (!int.TryParse(req.Query["limit"], out var limit))
-            {
-                limit = 20;
-            }
-
-            return new OkObjectResult(GetStaticCollectionResponse(GeneralFeatures, offset, limit));
+            return new OkObjectResult(GetStaticCollectionResponse(GeneralFeatures, req));
         }
 
         [FunctionName("GetGeneralFeatureByName")]
         [OpenApiOperation(operationId: "GetGeneralFeatureByName")]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetGeneralFeatureByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/general/{{name}}")] HttpRequest req,
             string name)
@@ -79,30 +67,21 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllLegendaryFeatures")]
         [OpenApiOperation(operationId: "GetAllLegendaryFeatures")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
         public IActionResult GetAllLegendaryFeatures(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/legendary")] HttpRequest req)
         {
-            if (!int.TryParse(req.Query["offset"], out var offset))
-            {
-                offset = 0;
-            }
-            if (!int.TryParse(req.Query["limit"], out var limit))
-            {
-                limit = 20;
-            }
-
-            return new OkObjectResult(GetStaticCollectionResponse(LegendaryFeatures, offset, limit));
+            return new OkObjectResult(GetStaticCollectionResponse(LegendaryFeatures, req));
         }
 
         [FunctionName("GetLegendaryFeatureByName")]
         [OpenApiOperation(operationId: "GetLegendaryFeatureByName")]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetLegendaryFeatureByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/legendary/{{name}}")] HttpRequest req,
             string name)
@@ -123,30 +102,21 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllPassives")]
         [OpenApiOperation(operationId: "GetAllPassives")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
         public IActionResult GetAllPassives(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/passives")] HttpRequest req)
         {
-            if (!int.TryParse(req.Query["offset"], out var offset))
-            {
-                offset = 0;
-            }
-            if (!int.TryParse(req.Query["limit"], out var limit))
-            {
-                limit = 20;
-            }
-
-            return new OkObjectResult(GetStaticCollectionResponse(Passives, offset, limit));
+            return new OkObjectResult(GetStaticCollectionResponse(Passives, req));
         }
 
         [FunctionName("GetPassiveByName")]
         [OpenApiOperation(operationId: "GetPassiveByName")]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetPassiveByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/passives/{{name}}")] HttpRequest req,
             string name)
@@ -167,30 +137,21 @@ namespace TheReplacement.PTA.Api.Controllers
 
         [FunctionName("GetAllSkills")]
         [OpenApiOperation(operationId: "GetAllSkills")]
-        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Offset** parameter")]
-        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The **Limit** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage), Description = "The OK response")]
+        [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
         public IActionResult GetAllSkills(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/skills")] HttpRequest req)
         {
-            if (!int.TryParse(req.Query["offset"], out var offset))
-            {
-                offset = 0;
-            }
-            if (!int.TryParse(req.Query["limit"], out var limit))
-            {
-                limit = 20;
-            }
-
-            return new OkObjectResult(GetStaticCollectionResponse(Skills, offset, limit));
+            return new OkObjectResult(GetStaticCollectionResponse(Skills, req));
         }
 
         [FunctionName("GetSkillByName")]
         [OpenApiOperation(operationId: "GetSkillByName")]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel), Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string), Description = "The Not Found response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string), Description = "The Bad response")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
         public IActionResult GetSkillByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/skills/{{name}}")] HttpRequest req,
             string name)
