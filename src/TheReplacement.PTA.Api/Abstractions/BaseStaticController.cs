@@ -10,7 +10,7 @@ namespace TheReplacement.PTA.Api.Abstractions
 {
     public abstract class BaseStaticController
     {
-        public StaticCollectionMessage GetStaticCollectionResponse<TDocument>(
+        public static StaticCollectionMessage GetStaticCollectionResponse<TDocument>(
             IEnumerable<TDocument> documents,
             HttpRequest request) where TDocument : IDexDocument
         {
@@ -39,7 +39,37 @@ namespace TheReplacement.PTA.Api.Abstractions
             );
         }
 
-        protected string GetPreviousUrl(int offset, int limit, string hostUrl)
+        protected static StaticCollectionMessage GetAlphabetizeStaticCollectionResponse<TDocument>(
+            IEnumerable<TDocument> documents,
+            HttpRequest request) where TDocument : IDexDocument
+        {
+            if (!int.TryParse(request.Query["offset"], out var offset))
+            {
+                offset = 0;
+            }
+            if (!int.TryParse(request.Query["limit"], out var limit))
+            {
+                limit = 20;
+            }
+
+            var hostUrl = $"{request.Scheme}://{request.Host}{request.Path}".Trim('/');
+            var count = documents.Count();
+            var previous = GetPreviousUrl(offset, limit, hostUrl);
+            var next = GetNextUrl(offset, limit, count, hostUrl);
+            var results = documents.GetSubset(offset, limit)
+                .Select(doc => GetResultsMember(doc, hostUrl))
+                .OrderBy(result => result.Name);
+
+            return new StaticCollectionMessage
+            (
+                count,
+                previous,
+                next,
+                results
+            );
+        }
+
+        private static string GetPreviousUrl(int offset, int limit, string hostUrl)
         {
             int previousOffset = Math.Max(0, offset - limit);
             int previousLimit = offset - limit < 0 ? offset : limit;
@@ -51,7 +81,7 @@ namespace TheReplacement.PTA.Api.Abstractions
             return $"{hostUrl}?offset={previousOffset}&limit={previousLimit}";
         }
 
-        protected string GetNextUrl(int offset, int limit, int count, string hostUrl)
+        private static string GetNextUrl(int offset, int limit, int count, string hostUrl)
         {
             int nextOffset = Math.Min(offset + limit, count - limit);
             if (nextOffset <= offset)
@@ -62,7 +92,7 @@ namespace TheReplacement.PTA.Api.Abstractions
             return $"{hostUrl}?offset={nextOffset}&limit={limit}";
         }
 
-        protected ResultMessage GetResultsMember<TDocument>(TDocument document, string hostUrl) where TDocument : IDexDocument
+        private static ResultMessage GetResultsMember<TDocument>(TDocument document, string hostUrl) where TDocument : IDexDocument
         {
             if (document == null)
             {
