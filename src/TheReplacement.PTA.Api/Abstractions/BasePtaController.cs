@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace TheReplacement.PTA.Api.Abstractions
 {
     public abstract class BasePtaController
     {
+        protected ILogger<BasePtaController> _logger;
         protected abstract MongoCollection Collection { get; }
 
         protected IDocument GetDocument(Guid id, MongoCollection collection, out IActionResult notFound)

@@ -24,7 +24,6 @@ namespace TheReplacement.PTA.Api.Controllers
 {
     public class GameController : BasePtaController
     {
-        private readonly ILogger<GameController> _logger;
         private const string RoutePrefix = "v1/game";
 
         public GameController(ILogger<GameController> log)
