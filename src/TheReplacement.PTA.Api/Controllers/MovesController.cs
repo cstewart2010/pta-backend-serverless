@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TheReplacement.PTA.Api.Abstractions;
 using TheReplacement.PTA.Api.Services.Enums;
 using TheReplacement.PTA.Api.Services.Models;
 using TheReplacement.PTA.Api.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -16,34 +16,34 @@ using TheReplacement.PTA.Api.Extensions;
 
 namespace TheReplacement.PTA.Api.Controllers
 {
-    public class BerryController : BaseStaticController
+    public class MovesController : BaseStaticController
     {
-        private const string RoutePrefix = "v1/berrydex";
-        private static readonly IEnumerable<BerryModel> Berries = DexUtility.GetDexEntries<BerryModel>(DexType.Berries);
+        private const string RoutePrefix = "v1/movedex";
+        private static readonly IEnumerable<MoveModel> Moves = DexUtility.GetDexEntries<MoveModel>(DexType.Moves);
 
-        public BerryController(ILogger<BerryController> log)
+        public MovesController(ILogger<MovesController> log)
         {
             _logger = log;
         }
 
-        [FunctionName("GetAllBerries")]
-        [OpenApiOperation(operationId: "GetAllBerries")]
+        [FunctionName("GetAllMoves")]
+        [OpenApiOperation(operationId: "GetAllMoves")]
         [OpenApiParameter(name: "offset", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
         [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StaticCollectionMessage))]
-        public IActionResult GetAllBerries(
+        public IActionResult GetAllMoves(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RoutePrefix)] HttpRequest req)
         {
-            return new OkObjectResult(GetStaticCollectionResponse(Berries, req));
+            return new OkObjectResult(GetStaticCollectionResponse(Moves, req));
         }
 
-        [FunctionName("GetBerryByName")]
-        [OpenApiOperation(operationId: "GetBerryByName")]
+        [FunctionName("GetMoveByName")]
+        [OpenApiOperation(operationId: "GetMoveByName")]
         [OpenApiParameter(name: "name", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BerryModel))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "text/plain", bodyType: typeof(string))]
-        public IActionResult GetBerryByName(
+        public IActionResult GetMoveByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{RoutePrefix}/{{name}}")] HttpRequest req,
             string name)
         {
@@ -52,7 +52,7 @@ namespace TheReplacement.PTA.Api.Controllers
                 return new BadRequestObjectResult($"You forgot the {nameof(name)} route parameter");
             }
 
-            var document = Berries.GetStaticDocument(name);
+            var document = Moves.GetStaticDocument(name);
             if (document != null)
             {
                 return new OkObjectResult(document);

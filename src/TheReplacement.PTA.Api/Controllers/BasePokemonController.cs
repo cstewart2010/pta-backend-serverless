@@ -20,7 +20,6 @@ namespace TheReplacement.PTA.Api.Controllers
 {
     public class BasePokemonController : BaseStaticController
     {
-        private readonly ILogger<BasePokemonController> _logger;
         private const string RoutePrefix = "v1/pokedex";
         private static readonly IEnumerable<BasePokemonModel> AllPokemon = DexUtility.GetDexEntries<BasePokemonModel>(DexType.BasePokemon);
         private static readonly IEnumerable<BasePokemonModel> BasePokemon = AllPokemon
