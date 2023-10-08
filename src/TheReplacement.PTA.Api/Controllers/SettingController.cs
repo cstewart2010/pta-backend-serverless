@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -15,14 +14,12 @@ using TheReplacement.PTA.Api.Services.Models;
 using TheReplacement.PTA.Api.Services;
 using TheReplacement.PTA.Api.Extensions;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using TheReplacement.PTA.Api.Models;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 
 namespace TheReplacement.PTA.Api.Controllers
 {
