@@ -1,22 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using TheReplacement.PTA.Api.Abstractions;
 using TheReplacement.PTA.Api.Extensions;
 using TheReplacement.PTA.Api.Messages;
-using TheReplacement.PTA.Api.Objects;
 using TheReplacement.PTA.Api.Services;
 using TheReplacement.PTA.Api.Services.Enums;
 using TheReplacement.PTA.Api.Services.Models;
@@ -138,7 +134,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiOperation(operationId: "UpdateHP")]
         [OpenApiParameter(name: "gameId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "trainerId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
-        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Query, Required = true, Type = typeof(Guid))]
+        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "hp", In = ParameterLocation.Query, Required = true, Type = typeof(int))]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string))]
@@ -174,7 +170,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiOperation(operationId: "SwitchForm")]
         [OpenApiParameter(name: "gameId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "trainerId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
-        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Query, Required = true, Type = typeof(Guid))]
+        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "form", In = ParameterLocation.Query, Required = true, Type = typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(PokemonModel))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string))]
@@ -231,7 +227,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiOperation(operationId: "MarkPokemonAsEvolvable")]
         [OpenApiParameter(name: "gameId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "gameMasterId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
-        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Query, Required = true, Type = typeof(Guid))]
+        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string))]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
@@ -271,7 +267,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiOperation(operationId: "EvolvePokemonAsync")]
         [OpenApiParameter(name: "gameId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "trainerId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
-        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Query, Required = true, Type = typeof(Guid))]
+        [OpenApiParameter(name: "pokemonId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiRequestBody(contentType:  "application/json", bodyType: typeof(PokemonEvolutionDataModel), Required = true)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(PokemonModel))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string))]
@@ -345,7 +341,6 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiParameter(name: "trainerId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "dexNo", In = ParameterLocation.Query, Required = true, Type = typeof(int))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(AbstractMessage))]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(AbstractMessage))]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
         public IActionResult UpdateDexItemIsSeen(
@@ -390,7 +385,6 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiParameter(name: "trainerId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "dexNo", In = ParameterLocation.Query, Required = true, Type = typeof(int))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(AbstractMessage))]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(AbstractMessage))]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
         public IActionResult UpdateDexItemIsCaught(
