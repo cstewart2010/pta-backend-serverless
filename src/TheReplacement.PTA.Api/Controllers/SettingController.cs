@@ -20,6 +20,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using TheReplacement.PTA.Api.Models;
+using Microsoft.Extensions.Logging;
 
 namespace TheReplacement.PTA.Api.Controllers
 {
@@ -28,8 +29,9 @@ namespace TheReplacement.PTA.Api.Controllers
         private const string RoutePrefix = "v1/setting";
         private static readonly byte[] Buffer = new byte[36];
 
-        public SettingController()
+        public SettingController(ILogger<SettingController> log)
         {
+            _logger = log;
             Collection = MongoCollection.Settings;
         }
 
