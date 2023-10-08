@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System.Net;
 using System;
 using TheReplacement.PTA.Api.Abstractions;
@@ -126,7 +124,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiOperation(operationId: "CreateNewNpcAsync")]
         [OpenApiParameter(name: "gameId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
         [OpenApiParameter(name: "gameMasterId", In = ParameterLocation.Path, Required = true, Type = typeof(Guid))]
-        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(NewNpcData), Required = true)]
+        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(NewNpcDataModel), Required = true)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NpcModel))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(MongoWriteError))]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
@@ -279,7 +277,7 @@ namespace TheReplacement.PTA.Api.Controllers
 
         private static async Task<NpcModel> CreateNpcAsync(HttpRequest request)
         {
-            var data = (await request.GetRequestBody()).ToObject<NewNpcData>();
+            var data = (await request.GetRequestBody()).ToObject<NewNpcDataModel>();
 
             var feats = data.Feats.Select(feat => DexUtility.GetDexEntry<FeatureModel>(DexType.Features, feat.ToString()))
                 .Where(feat => feat != null)
