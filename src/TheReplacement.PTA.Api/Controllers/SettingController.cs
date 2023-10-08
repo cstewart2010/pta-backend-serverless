@@ -244,7 +244,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest)]
         public IActionResult ReturnToPokeball(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = $"{RoutePrefix}/{{gameId}}/{{trainerId}}/{{pokemonId}}/catch")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = $"{RoutePrefix}/{{gameId}}/{{trainerId}}/{{pokemonId}}/return")] HttpRequest req,
             Guid gameId,
             Guid trainerId,
             Guid pokemonId)
@@ -275,7 +275,7 @@ namespace TheReplacement.PTA.Api.Controllers
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest)]
         public IActionResult CatchPokemon(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = $"{RoutePrefix}/{{gameId}}/{{trainerId}}/{{pokemonId}}/return")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = $"{RoutePrefix}/{{gameId}}/{{trainerId}}/{{pokemonId}}/catch")] HttpRequest req,
             Guid gameId,
             Guid trainerId,
             Guid pokemonId)
